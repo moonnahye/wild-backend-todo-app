@@ -1,5 +1,6 @@
 package com.example.demo.presentation;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -36,19 +37,15 @@ public class RequestHandler implements HttpHandler {
         String method = exchange.getRequestMethod();
 
         if (method.equals("PUT") && path.matches("^/todo/\\d+$")) {
-            String id = path.substring(path.lastIndexOf("/") + 1);
-            ResourceHandler handler = new TodoStatusChangeResource();
-            String responseContent = handler.handle(id);
-
+            String responseContent =
+                    getResponseContent(path, new TodoStatusChangeResource());
             sendResponse(exchange, responseContent);
             return;
         }
 
         if (method.equals("DELETE") && path.matches("^/todo/\\d+$")) {
-            String id = path.substring(path.lastIndexOf("/") + 1);
-            ResourceHandler handler = new TodoDeleteResource();
-            String responseContent = handler.handle(id);
-
+            String responseContent =
+                    getResponseContent(path, new TodoDeleteResource());
             sendResponse(exchange, responseContent);
             return;
         }
@@ -76,5 +73,14 @@ public class RequestHandler implements HttpHandler {
         try (OutputStream os = exchange.getResponseBody()) {
             os.write(bytes);
         }
+    }
+
+    private String getResponseContent(String path, ResourceHandler handler) throws JsonProcessingException {
+        String id = getId(path);
+        return handler.handle(id);
+    }
+
+    private String getId(String path) {
+        return path.substring(path.lastIndexOf("/") + 1);
     }
 }
