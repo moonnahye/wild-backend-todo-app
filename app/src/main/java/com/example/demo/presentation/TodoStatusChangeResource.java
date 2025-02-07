@@ -12,13 +12,11 @@ public class TodoStatusChangeResource implements ResourceHandler{
     private final TodoManager todoManager = new TodoManager();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
+
     @Override
     public String handle(String content) throws JsonProcessingException {
 
-        TodoChangeRequestDto requestDto = objectMapper.readValue(
-                content, TodoChangeRequestDto.class);
-
-        Todo findTodo = todoManager.getTodo(requestDto.getId());
+        Todo findTodo = todoManager.getTodo(Integer.parseInt(content));
         Todo updateTodo = todoManager.updateTodo(findTodo.getId());
 
         return objectMapper.writeValueAsString(

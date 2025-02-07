@@ -18,24 +18,42 @@ public class RequestHandler implements HttpHandler {
         handlers.put("GET /", new HomeResource());
         handlers.put("POST /todo", new TodoCreateResource());
         handlers.put("GET /todo", new TodoListResource());
-        handlers.put("PUT /todo", new TodoStatusChangeResource());
-        handlers.put("DELETE /todo", new TodoDeleteResource());
     }
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         String requestKey = getRequestKey(exchange);
 
-        if (!handlers.containsKey(requestKey)) {
-            exchange.sendResponseHeaders(404, -1);
+        if (handlers.containsKey(requestKey)) {
+            ResourceHandler handler = handlers.get(requestKey);
+            String requestContent = getRequestContent(exchange);
+            String responseContent = handler.handle(requestContent);
+            sendResponse(exchange, responseContent);
+            return;
         }
 
-        ResourceHandler handler = handlers.get(requestKey);
+        String path = exchange.getRequestURI().getPath();
+        String method = exchange.getRequestMethod();
 
-        String requestContent = getRequestContent(exchange);
-        String responseContent = handler.handle(requestContent);
+        if (method.equals("PUT") && path.matches("^/todo/\\d+$")) {
+            String id = path.substring(path.lastIndexOf("/") + 1);
+            ResourceHandler handler = new TodoStatusChangeResource();
+            String responseContent = handler.handle(id);
 
-        sendResponse(exchange, responseContent);
+            sendResponse(exchange, responseContent);
+            return;
+        }
+
+        if (method.equals("DELETE") && path.matches("^/todo/\\d+$")) {
+            String id = path.substring(path.lastIndexOf("/") + 1);
+            ResourceHandler handler = new TodoDeleteResource();
+            String responseContent = handler.handle(id);
+
+            sendResponse(exchange, responseContent);
+            return;
+        }
+
+        exchange.sendResponseHeaders(404, -1);
     }
 
     private String getRequestKey(HttpExchange exchange) {

@@ -17,10 +17,7 @@ public class TodoDeleteResource implements ResourceHandler{
     @Override
     public String handle(String content) throws JsonProcessingException {
 
-        TodoDeleteRequestDto requestDto =
-                objectMapper.readValue(content, TodoDeleteRequestDto.class);
-
-        List<Todo> todoList = todoManager.deleteTodo(requestDto.getId());
+        List<Todo> todoList = todoManager.deleteTodo(Integer.parseInt(content));
 
         return objectMapper.writeValueAsString(todoList.stream()
                 .map(todo -> new TodoResponseDto(
