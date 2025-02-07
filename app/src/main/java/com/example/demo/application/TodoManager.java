@@ -5,7 +5,7 @@ import com.example.demo.data.TodoRepository;
 
 import java.util.List;
 
-public class TodoCreator {
+public class TodoManager {
 
     private final TodoRepository todoRepository = TodoRepository.getInstance();
     private static int sequence = 0;
