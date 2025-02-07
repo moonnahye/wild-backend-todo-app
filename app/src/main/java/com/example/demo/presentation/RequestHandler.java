@@ -24,23 +24,34 @@ public class RequestHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        URI uri = exchange.getRequestURI();
-        String path = uri.getPath();
-        String method = exchange.getRequestMethod();
+        String requestKey = getRequestKey(exchange);
 
-        String requestKey = method + " " + path;
-
-        if(!handlers.containsKey(requestKey)) {
+        if (!handlers.containsKey(requestKey)) {
             exchange.sendResponseHeaders(404, -1);
         }
 
         ResourceHandler handler = handlers.get(requestKey);
 
-        InputStream inputStream = exchange.getRequestBody();
-        String requestContent = new String(inputStream.readAllBytes());
-
+        String requestContent = getRequestContent(exchange);
         String responseContent = handler.handle(requestContent);
 
+        sendResponse(exchange, responseContent);
+    }
+
+    private String getRequestKey(HttpExchange exchange) {
+        URI uri = exchange.getRequestURI();
+        String path = uri.getPath();
+        String method = exchange.getRequestMethod();
+
+        return method + " " + path;
+    }
+
+    private String getRequestContent(HttpExchange exchange) throws IOException {
+        InputStream inputStream = exchange.getRequestBody();
+        return new String(inputStream.readAllBytes());
+    }
+
+    private void sendResponse(HttpExchange exchange, String responseContent) throws IOException {
         byte[] bytes = responseContent.getBytes();
         exchange.sendResponseHeaders(200, bytes.length);
 
