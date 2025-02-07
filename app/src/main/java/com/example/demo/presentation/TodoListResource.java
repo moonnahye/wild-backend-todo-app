@@ -20,6 +20,7 @@ public class TodoListResource implements ResourceHandler {
 
         return objectMapper.writeValueAsString(todoList.stream()
                 .map(todo -> new TodoResponseDto(
+                                todo.getId(),
                                 todo.getContent(),
                                 todo.isDone()
                         )

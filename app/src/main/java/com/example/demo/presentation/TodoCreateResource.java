@@ -21,6 +21,6 @@ public class TodoCreateResource implements ResourceHandler {
         Todo todo = todoCreator.make(requestDto.getContent());
 
         return objectMapper.writeValueAsString(
-                new TodoResponseDto(todo.getContent(), todo.isDone()));
+                new TodoResponseDto(todo.getId(), todo.getContent(), todo.isDone()));
     }
 }
