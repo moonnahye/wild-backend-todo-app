@@ -19,7 +19,7 @@ public class TodoStatusChangeResource implements ResourceHandler{
                 content, TodoChangeRequestDto.class);
 
         Todo findTodo = todoCreator.getTodo(requestDto.getId());
-        Todo updateTodo = todoCreator.update(findTodo.getId());
+        Todo updateTodo = todoCreator.updateTodo(findTodo.getId());
 
         return objectMapper.writeValueAsString(
                 new TodoResponseDto(

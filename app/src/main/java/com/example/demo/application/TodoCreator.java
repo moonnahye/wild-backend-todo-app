@@ -24,9 +24,14 @@ public class TodoCreator {
         return todoRepository.getTodo(id);
     }
 
-    public Todo update(int id) {
+    public Todo updateTodo(int id) {
         Todo todo = todoRepository.getTodo(id);
         todo.changeStatus();
         return todo;
+    }
+
+    public List<Todo> deleteTodo(int id) {
+        todoRepository.delete(id);
+        return todoRepository.getAll();
     }
 }

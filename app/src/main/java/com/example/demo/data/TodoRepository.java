@@ -34,4 +34,8 @@ public class TodoRepository {
                 .orElse(null);
     }
 
+    public void delete(int id) {
+        Todo todo = getTodo(id);
+        todoList.remove(todo);
+    }
 }

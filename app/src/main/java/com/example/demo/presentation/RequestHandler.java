@@ -19,6 +19,7 @@ public class RequestHandler implements HttpHandler {
         handlers.put("POST /todo", new TodoCreateResource());
         handlers.put("GET /todo", new TodoListResource());
         handlers.put("PUT /todo", new TodoStatusChangeResource());
+        handlers.put("DELETE /todo", new TodoDeleteResource());
     }
 
     @Override
