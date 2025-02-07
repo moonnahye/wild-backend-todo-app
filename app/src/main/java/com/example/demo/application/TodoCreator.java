@@ -19,4 +19,14 @@ public class TodoCreator {
     public List<Todo> getTodoList() {
         return todoRepository.getAll();
     }
+
+    public Todo getTodo(int id) {
+        return todoRepository.getTodo(id);
+    }
+
+    public Todo update(int id) {
+        Todo todo = todoRepository.getTodo(id);
+        todo.changeStatus();
+        return todo;
+    }
 }

@@ -22,4 +22,9 @@ public class Todo {
     public boolean isDone() {
         return done;
     }
+
+    public boolean changeStatus() {
+        done = !done;
+        return done;
+    }
 }
