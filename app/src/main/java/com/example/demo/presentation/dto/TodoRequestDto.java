@@ -3,8 +3,7 @@ package com.example.demo.presentation.dto;
 public class TodoRequestDto {
     private String content;
 
-    public TodoRequestDto(String content) {
-        this.content = content;
+    public TodoRequestDto() {
     }
 
     public String getContent() {

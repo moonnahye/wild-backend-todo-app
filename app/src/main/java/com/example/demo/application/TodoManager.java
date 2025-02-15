@@ -1,14 +1,19 @@
 package com.example.demo.application;
 
 import com.example.demo.data.Todo;
-import com.example.demo.data.TodoRepository;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class TodoManager {
 
-    private final TodoRepository todoRepository = TodoRepository.getInstance();
+    private final TodoRepository todoRepository;
     private static int sequence = 0;
+
+    public TodoManager(TodoRepository todoRepository) {
+        this.todoRepository = todoRepository;
+    }
 
     public Todo make(String content) {
         Todo todo = new Todo(++sequence, content, false);

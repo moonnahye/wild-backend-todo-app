@@ -20,7 +20,11 @@ import java.util.List;
 @RequestMapping("/todo")
 public class TodoController {
 
-    private final TodoManager todoManager = new TodoManager();
+    private final TodoManager todoManager;
+
+    public TodoController(TodoManager todoManager) {
+        this.todoManager = todoManager;
+    }
 
     @GetMapping
     public TodoListResponseDto list() {
