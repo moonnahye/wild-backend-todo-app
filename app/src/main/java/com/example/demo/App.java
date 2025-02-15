@@ -2,22 +2,15 @@ package com.example.demo;
 
 import com.example.demo.presentation.RequestHandler;
 import com.sun.net.httpserver.HttpServer;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
+@SpringBootApplication
 public class App {
-    public static void main(String[] args) throws IOException {
-        App app = new App();
-        app.run();
-    }
-
-    public void run() throws IOException {
-        RequestHandler handler = new RequestHandler();
-        InetSocketAddress address = new InetSocketAddress("localhost", 8080);
-        HttpServer httpServer = HttpServer.create(address, 0);
-
-        httpServer.createContext("/", handler);
-        httpServer.start();
+    public static void main(String[] args)  {
+        SpringApplication.run(App.class, args);
     }
 }
