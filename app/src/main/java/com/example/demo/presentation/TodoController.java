@@ -1,6 +1,6 @@
 package com.example.demo.presentation;
 
-import com.example.demo.application.TodoManager;
+import com.example.demo.application.TodoService;
 import com.example.demo.data.Todo;
 import com.example.demo.presentation.dto.TodoListResponseDto;
 import com.example.demo.presentation.dto.TodoRequestDto;
@@ -20,16 +20,16 @@ import java.util.List;
 @RequestMapping("/todo")
 public class TodoController {
 
-    private final TodoManager todoManager;
+    private final TodoService todoService;
 
-    public TodoController(TodoManager todoManager) {
-        this.todoManager = todoManager;
+    public TodoController(TodoService todoService) {
+        this.todoService = todoService;
     }
 
     @GetMapping
     public TodoListResponseDto list() {
 
-        List<Todo> todoList = todoManager.getTodoList();
+        List<Todo> todoList = todoService.getTodoList();
 
         return new TodoListResponseDto(todoList.stream()
                 .map(todo -> new TodoResponseDto(
@@ -44,7 +44,7 @@ public class TodoController {
     public TodoResponseDto create(
             @RequestBody TodoRequestDto requestDto) {
 
-        Todo todo = todoManager.make(requestDto.getContent());
+        Todo todo = todoService.make(requestDto.getContent());
 
         return new TodoResponseDto(
                 todo.getId(), todo.getContent(), todo.isDone());
@@ -53,8 +53,8 @@ public class TodoController {
     @PutMapping("/{id}")
     public TodoResponseDto update(@PathVariable int id) {
 
-        Todo findTodo = todoManager.getTodo(id);
-        Todo updateTodo = todoManager.updateTodo(findTodo.getId());
+        Todo findTodo = todoService.getTodo(id);
+        Todo updateTodo = todoService.updateTodo(findTodo.getId());
 
         return new TodoResponseDto(
                 updateTodo.getId(),
@@ -66,7 +66,7 @@ public class TodoController {
     @DeleteMapping("/{id}")
     public TodoListResponseDto delete(@PathVariable int id) {
 
-        List<Todo> todoList = todoManager.deleteTodo(id);
+        List<Todo> todoList = todoService.deleteTodo(id);
 
         return new TodoListResponseDto(todoList.stream()
                 .map(todo -> new TodoResponseDto(

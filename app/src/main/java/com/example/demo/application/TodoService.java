@@ -6,12 +6,12 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class TodoManager {
+public class TodoService {
 
     private final TodoRepository todoRepository;
     private static int sequence = 0;
 
-    public TodoManager(TodoRepository todoRepository) {
+    public TodoService(TodoRepository todoRepository) {
         this.todoRepository = todoRepository;
     }
 
