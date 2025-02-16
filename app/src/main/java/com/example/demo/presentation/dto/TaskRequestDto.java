@@ -1,11 +1,11 @@
 package com.example.demo.presentation.dto;
 
-public class TodoRequestDto {
+public class TaskRequestDto {
     private String content;
 
-    public TodoRequestDto() {
+    public TaskRequestDto() {
     }
-    public TodoRequestDto(String content) {
+    public TaskRequestDto(String content) {
         this.content = content;
     }
 

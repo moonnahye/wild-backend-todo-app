@@ -1,9 +1,8 @@
 package com.example.demo.presentation;
 
-import com.example.demo.application.TodoRepository;
-import com.example.demo.application.TodoService;
-import com.example.demo.data.Todo;
-import com.example.demo.presentation.dto.TodoRequestDto;
+import com.example.demo.application.TaskService;
+import com.example.demo.data.Task;
+import com.example.demo.presentation.dto.TaskRequestDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -25,7 +23,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest
-class TodoControllerTest {
+class TaskControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -34,17 +32,17 @@ class TodoControllerTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private TodoService todoService;
+    private TaskService taskService;
 
     @Test
     void list() throws Exception {
 
-        List<Todo> todoList = List.of(
-                new Todo(1, "todo1", false),
-                new Todo(2, "todo2", true)
+        List<Task> todoList = List.of(
+                new Task(1, "todo1", false),
+                new Task(2, "todo2", true)
         );
 
-        when(todoService.getTodoList()).thenReturn(todoList);
+        when(taskService.getTasks()).thenReturn(todoList);
 
         mockMvc.perform(get("/tasks")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -55,10 +53,10 @@ class TodoControllerTest {
     @Test
     void create() throws Exception {
 
-        TodoRequestDto requestDto = new TodoRequestDto("new");
-        Todo createdTodo = new Todo(1, "new", false);
+        TaskRequestDto requestDto = new TaskRequestDto("new");
+        Task createdTodo = new Task(1, "new", false);
 
-        when(todoService.make("new")).thenReturn(createdTodo);
+        when(taskService.make("new")).thenReturn(createdTodo);
 
         mockMvc.perform(post("/tasks")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -71,11 +69,11 @@ class TodoControllerTest {
     void update() throws Exception {
 
         int id = 1;
-        Todo todo = new Todo(1, "todo", false);
-        Todo updatedTodo = new Todo(1, "todo", true);
+        Task todo = new Task(1, "todo", false);
+        Task updatedTodo = new Task(1, "todo", true);
 
-        when(todoService.getTodo(id)).thenReturn(todo);
-        when(todoService.updateTodo(id)).thenReturn(updatedTodo);
+        when(taskService.getTask(id)).thenReturn(todo);
+        when(taskService.updateTask(id)).thenReturn(updatedTodo);
 
         mockMvc.perform(put("/tasks/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -88,23 +86,23 @@ class TodoControllerTest {
     void deleteTodo() throws Exception {
         int id = 1;
 
-        Todo todo =  new Todo(1, "todo1", false);
-        when(todoService.getTodo(id)).thenReturn(todo);
+        Task todo =  new Task(1, "todo1", false);
+        when(taskService.getTask(id)).thenReturn(todo);
 
         mockMvc.perform(delete("/tasks/{id}", id))
                 .andExpect(status().isNoContent());
 
-        verify(todoService).deleteTodo(id);
+        verify(taskService).deleteTask(id);
     }
 
     @Test
     void delete_NotExistTodo() throws Exception {
 
-        when(todoService.getTodo(999)).thenReturn(null);
+        when(taskService.getTask(999)).thenReturn(null);
 
         mockMvc.perform(delete("/tasks/{id}", 999))
                 .andExpect(status().isNotFound());
 
-        verify(todoService, never()).deleteTodo(999);
+        verify(taskService, never()).deleteTask(999);
     }
 }
