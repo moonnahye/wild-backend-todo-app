@@ -9,7 +9,7 @@ import java.util.List;
 public class TaskService {
 
     private final TaskRepository taskRepository;
-    private static int sequence = 0;
+    private int sequence = 0;
 
     public TaskService(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
