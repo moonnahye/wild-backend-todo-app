@@ -5,6 +5,10 @@ public class TodoRequestDto {
 
     public TodoRequestDto() {
     }
+    public TodoRequestDto(String content) {
+        this.content = content;
+    }
+
 
     public String getContent() {
         return content;
