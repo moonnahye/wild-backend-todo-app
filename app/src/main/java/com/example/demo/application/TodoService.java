@@ -26,7 +26,8 @@ public class TodoService {
     }
 
     public Todo getTodo(int id) {
-        return todoRepository.getTodo(id);
+        Todo todo = todoRepository.getTodo(id);
+        return todo == null ? null : todo;
     }
 
     public Todo updateTodo(int id) {

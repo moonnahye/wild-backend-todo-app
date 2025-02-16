@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -87,7 +88,8 @@ class TodoControllerTest {
     void deleteTodo() throws Exception {
         int id = 1;
 
-        doNothing().when(todoService).deleteTodo(id);
+        Todo todo =  new Todo(1, "todo1", false);
+        when(todoService.getTodo(id)).thenReturn(todo);
 
         mockMvc.perform(delete("/todo/{id}", id))
                 .andExpect(status().isNoContent());
@@ -95,4 +97,15 @@ class TodoControllerTest {
         verify(todoService).deleteTodo(id);
     }
 
+    @Test
+    void delete_NotExistTodo() throws Exception {
+
+        when(todoService.getTodo(999)).thenReturn(null);
+
+        mockMvc.perform(delete("/todo/{id}", 999))
+                .andExpect(status().isNotFound());
+
+        verify(todoService, never()).deleteTodo(999);
+
+    }
 }
