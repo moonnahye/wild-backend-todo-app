@@ -8,7 +8,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -28,8 +27,6 @@ class TaskServiceTest {
     @Test
     void createTodo() {
         String content = "new";
-        doNothing().when(taskRepository).add(any());
-
         Task createdTodo = taskService.make(content);
 
         assertThat(createdTodo.getContent()).isEqualTo(content);
@@ -94,10 +91,8 @@ class TaskServiceTest {
     }
 
     @Test
-    void deleteTask(){
+    void deleteTask() {
         int id = 1;
-        doNothing().when(taskRepository).delete(id);
-
         taskService.deleteTask(id);
 
         verify(taskRepository).delete(id);
