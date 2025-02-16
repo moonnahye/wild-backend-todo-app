@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/todo")
+@RequestMapping("/tasks")
 public class TodoController {
 
     private final TodoService todoService;

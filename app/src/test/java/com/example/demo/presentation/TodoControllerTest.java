@@ -46,7 +46,7 @@ class TodoControllerTest {
 
         when(todoService.getTodoList()).thenReturn(todoList);
 
-        mockMvc.perform(get("/todo")
+        mockMvc.perform(get("/tasks")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
@@ -60,7 +60,7 @@ class TodoControllerTest {
 
         when(todoService.make("new")).thenReturn(createdTodo);
 
-        mockMvc.perform(post("/todo")
+        mockMvc.perform(post("/tasks")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestDto))
                 )
@@ -77,7 +77,7 @@ class TodoControllerTest {
         when(todoService.getTodo(id)).thenReturn(todo);
         when(todoService.updateTodo(id)).thenReturn(updatedTodo);
 
-        mockMvc.perform(put("/todo/{id}", id)
+        mockMvc.perform(put("/tasks/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updatedTodo)))
                 .andExpect(status().isOk());
@@ -91,7 +91,7 @@ class TodoControllerTest {
         Todo todo =  new Todo(1, "todo1", false);
         when(todoService.getTodo(id)).thenReturn(todo);
 
-        mockMvc.perform(delete("/todo/{id}", id))
+        mockMvc.perform(delete("/tasks/{id}", id))
                 .andExpect(status().isNoContent());
 
         verify(todoService).deleteTodo(id);
@@ -102,10 +102,9 @@ class TodoControllerTest {
 
         when(todoService.getTodo(999)).thenReturn(null);
 
-        mockMvc.perform(delete("/todo/{id}", 999))
+        mockMvc.perform(delete("/tasks/{id}", 999))
                 .andExpect(status().isNotFound());
 
         verify(todoService, never()).deleteTodo(999);
-
     }
 }
