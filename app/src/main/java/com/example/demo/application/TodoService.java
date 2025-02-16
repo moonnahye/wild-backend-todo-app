@@ -35,8 +35,7 @@ public class TodoService {
         return todo;
     }
 
-    public List<Todo> deleteTodo(int id) {
+    public void deleteTodo(int id) {
         todoRepository.delete(id);
-        return todoRepository.getAll();
     }
 }
