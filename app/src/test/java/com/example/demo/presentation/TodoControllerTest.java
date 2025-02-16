@@ -54,16 +54,16 @@ class TodoControllerTest {
     @Test
     void create() throws Exception {
 
-        String content = "new";
-        Todo createdTodo = new Todo(1, content, false);
-        when(todoService.make(content)).thenReturn(createdTodo);
+        TodoRequestDto requestDto = new TodoRequestDto("new");
+        Todo createdTodo = new Todo(1, "new", false);
+
+        when(todoService.make("new")).thenReturn(createdTodo);
 
         mockMvc.perform(post("/todo")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(content))
+                        .content(objectMapper.writeValueAsString(requestDto))
                 )
                 .andExpect(status().isCreated());
-
     }
 
     @Test
